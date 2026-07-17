@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#f5f7f2">
   <title>杜烨辰｜AI 应用实践者</title>
   <style>
-    /* 全局变量 + 重置 */
+    /* ===== 全局变量与重置 ===== */
     :root{--bg:#f5f7f2;--surface:#fff;--surface2:#eef1e9;--text:#15231d;--muted:#617069;--line:#dbe1d8;--primary:#176b52;--primary2:#0f4f3c;--accent:#d18b37;--accent-soft:#f4e5ce;--shadow:0 18px 55px rgba(27,54,43,.09);--radius:24px;--nav:rgba(245,247,242,.86);color-scheme:light}
     html[data-theme="dark"]{--bg:#0d1713;--surface:#14221c;--surface2:#1a2c24;--text:#edf5f0;--muted:#a2b5ac;--line:#2b4238;--primary:#70d0aa;--primary2:#a6e6ca;--accent:#e9ad62;--accent-soft:#49331e;--shadow:0 20px 60px rgba(0,0,0,.26);--nav:rgba(13,23,19,.87);color-scheme:dark}
     *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}button,a{font:inherit}button{color:inherit}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button,a,[role=tab]{-webkit-tap-highlight-color:transparent}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}.section{padding:74px 0}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--primary);font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.eyebrow:before{content:"";width:22px;height:2px;background:var(--accent)}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(40px,10vw,76px);line-height:1.04;letter-spacing:-.055em;margin-bottom:20px}h2{font-size:clamp(28px,7vw,43px);line-height:1.18;letter-spacing:-.035em;margin:8px 0 0}h3{line-height:1.35}.muted{color:var(--muted)}.skip{position:fixed;left:12px;top:-80px;z-index:99;padding:10px 14px;background:var(--text);color:var(--bg);border-radius:10px}.skip:focus{top:12px}
@@ -31,33 +31,53 @@
 <body>
   <a class="skip" href="#main">跳到主要内容</a>
 
-  <!-- 导航 -->
-  <header class="nav"><div class="wrap nav-in"><a class="brand" href="#top" aria-label="返回首页"><span class="brand-mark">杜</span><span>杜烨辰</span></a><nav class="nav-links" aria-label="主导航"><a href="#highlights">亮点</a><a href="#experience">经历</a><a href="#projects">项目</a><a href="#skills">技能</a><a href="#credentials">证书</a><a href="#contact">联系</a></nav><div class="nav-actions"><button class="icon-btn" id="themeBtn" aria-label="切换深浅色"></button><button class="icon-btn" id="printBtn" aria-label="打印简历"></button><button class="icon-btn menu-btn" id="menuBtn" aria-label="打开菜单" aria-expanded="false"></button></div></div></header>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="移动端导航"><a href="#highlights">亮点成果</a><a href="#experience">成长经历</a><a href="#projects">项目实践</a><a href="#skills">技能矩阵</a><a href="#credentials">教育与证书</a><a href="#contact">联系我</a></nav>
+  <!-- 导航栏 -->
+  <header class="nav"><div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="返回首页"><span class="brand-mark">杜</span><span>杜烨辰</span></a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#highlights">亮点</a><a href="#experience">经历</a><a href="#projects">项目</a><a href="#skills">技能</a><a href="#credentials">证书</a><a href="#contact">联系</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" aria-label="切换深浅色"></button>
+      <button class="icon-btn" id="printBtn" aria-label="打印简历"></button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="打开菜单" aria-expanded="false"></button>
+    </div>
+  </div></header>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="移动端导航">
+    <a href="#highlights">亮点成果</a><a href="#experience">成长经历</a><a href="#projects">项目实践</a><a href="#skills">技能矩阵</a><a href="#credentials">教育与证书</a><a href="#contact">联系我</a>
+  </nav>
 
   <main id="main"><div id="app"></div></main>
 
   <button class="top-btn" id="topBtn" aria-label="返回顶部">↑</button>
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="证书大图预览"><div class="lightbox-inner"><button class="lightbox-close" id="lightboxClose" aria-label="关闭">×</button><img id="lightboxImg" alt=""><p id="lightboxCaption"></p></div></div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="证书大图预览">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lightboxClose" aria-label="关闭">×</button>
+      <img id="lightboxImg" alt=""><p id="lightboxCaption"></p>
+    </div>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ═══════════════════════════════════════════════════
-    // 🔧 图片资源路径前缀（请根据实际目录修改）
-    // 若图片与 HTML 同级，保持空字符串 ''
-    const ASSET_BASE = '';   // 👈 修改此处
-    // ═══════════════════════════════════════════════════
+    // ============================================================
+    // 1. 资源路径前缀（用户可修改）
+    // ============================================================
+    const ASSET_BASE = '';   // 👈 若图片在子文件夹如 images/，则设为 'images/'
 
-    // 完整简历数据（按用户提供内容扩充）
+    // ============================================================
+    // 2. 简历数据（证书已分类）
+    // ============================================================
     const resume = {
       name: "杜烨辰",
       title: "AI 应用实践者 · 复合型青年人才",
       location: "江苏省苏州市姑苏区",
       phone: "1660196650",
       emailParts: ["2971665776", "qq.com"],
-      updated: "2025 年 2 月",
+      updated: "2026年7月",
+
       summary: "聚焦大模型应用落地，具备 Prompt Engineering、RAG、Agent、微调与 AI 数据分析的全链路实践能力。兼具组织协调、公众表达与长期自律，希望把技术理解转化为真实场景中的效率提升。",
       keywords: ["Prompt Engineering", "RAG", "Agent", "Python", "Fine-tuning", "AI + 数据分析"],
+
       metrics: [
         { value: "90%+", label: "智能问答检索准确率" },
         { value: "50+", label: "Prompt 模板迭代" },
@@ -65,6 +85,7 @@
         { value: "2000+", label: "文档处理零差错" },
         { value: "50h+", label: "累计公益服务" }
       ],
+
       experiences: {
         leadership: [
           { role: "班长 & 课代表", org: "吴县中学学生会 / 班级管理", time: "初中—高中连续担任",
@@ -105,6 +126,7 @@
             ] }
         ]
       },
+
       projects: [
         { name: "校园智能问答 Agent",
           desc: "面向校园信息咨询效率问题，独立完成知识库、Prompt、工具调用编排与对话体验优化。",
@@ -123,6 +145,7 @@
           result: "团队获姑苏区青少年组排球“区长杯”第 3 名。",
           tags: ["团队协作", "临场应变", "目标管理"] }
       ],
+
       skills: [
         { group: "AI 应用开发",
           items: [
@@ -144,6 +167,7 @@
         "数据清洗", "特征工程", "语义提取", "工具调用", "知识库构建",
         "公众表达", "团队协作", "项目复盘"
       ],
+
       education: {
         school: "江苏省苏州市吴县中学（本部）",
         detail: "理科方向 · 综合排名年级前 5%",
@@ -161,48 +185,55 @@
         { title: "优秀志愿者", sub: "吴县中学 80 周年校庆" },
         { title: "优秀团员", sub: "共青团吴县中学委员会" }
       ],
-      // 图片素材：按照用户提供的文件名
-      featuredMedia: [
-        { file: "1.jpg", webp: "1.webp", title: "排球比赛获奖证书", type: "体育荣誉" },
-        { file: "6.jpg", webp: "6.webp", title: "排球赛事荣誉", type: "体育荣誉" },
-        { file: "2.jpg", webp: "2.webp", title: "AI 专业认证", type: "人工智能" },
-        { file: "4.jpg", webp: "4.webp", title: "AI 能力证书", type: "人工智能" },
-        { file: "5.jpg", webp: "5.webp", title: "志愿服务证书", type: "公益服务" },
-        { file: "3.jpg", webp: "3.webp", title: "三好学生证书", type: "综合荣誉" }
+
+      // ====== 证书分类 ======
+      certGroups: [
+        {
+          name: "体育荣誉",
+          items: [
+            { file: "1.jpg", webp: "1.webp", title: "2023年排球比赛获奖证书", type: "体育荣誉" },
+            { file: "6.jpg", webp: "6.webp", title: "2022年排球比赛获奖证书", type: "体育荣誉" }
+          ]
+        },
+        {
+          name: "AI 专业认证",
+          items: [
+            { file: "2.jpg", webp: "2.webp", title: "人工智能训练师（高级）", type: "人工智能" },
+            { file: "4.jpg", webp: "4.webp", title: "人工智能训练师（初级）", type: "人工智能" },
+            // 9~35.png 全部加入
+            ...Array.from({ length: 27 }, (_, i) => {
+              const num = i + 9;
+              return {
+                file: num + ".png",
+                webp: num + ".webp",
+                title: `AI 专业认证 ${String(i+1).padStart(2, "0")}`,
+                type: "证书档案"
+              };
+            })
+          ]
+        },
+        {
+          name: "综合荣誉",
+          items: [
+            { file: "3.jpg", webp: "3.webp", title: "三好学生证书", type: "综合荣誉" },
+            { file: "5.jpg", webp: "5.webp", title: "志愿服务证书", type: "公益服务" }
+          ]
+        }
       ],
-      // 9-35.png 全部作为 AI 证书
-      certificates: Array.from({ length: 27 }, (_, i) => {
-        const num = i + 9;
-        return {
-          file: num + ".png",
-          webp: num + ".webp",
-          title: `AI 专业证书 ${String(i+1).padStart(2, "0")}`,
-          type: "证书档案"
-        };
-      }),
-      // 这些证书名称用于展示文字墙（可选）
-      certNames: [
-        "ITCILO 人工智能证书", "达摩院人工智能训练师（高级）",
-        "百炼平台智能体应用", "PAI ArtLab AIGC 设计",
-        "大模型内容生产力", "RAG 应用构建及优化",
-        "讯飞 Prompt 工程师", "讯飞微调工程师",
-        "讯飞智能体工程师", "讯飞 RAG 工程师",
-        "AI + 编程能力认证", "Prompt Engineer",
-        "LM Engineer", "Fine-tuning Engineer",
-        "Agent Engineer", "AI + 数据分析",
-        "Python 基础能力", "VISION 人工智能设计",
-        "Spring AI 应用开发", "华为人工智能初识",
-        "AI 智能语音识别", "YOLOv8 目标检测",
-        "CodeArts 实战"
-      ],
+
+      // 文档
       docs: [
         { file: "7.docx", title: "每日思想总结", desc: "个人观察、反思与成长记录" },
         { file: "8.docx", title: "经济学思考", desc: "对经济现象与基础逻辑的独立思考" }
       ],
+
+      // 二维码
       qr: "31.jpg"
     };
 
-    // ---------- 工具函数 ----------
+    // ============================================================
+    // 3. 工具函数
+    // ============================================================
     const icon = (name) => ({
       sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>',
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.4 15.3A9 9 0 0 1 8.7 3.6a9 9 0 1 0 11.7 11.7Z"/></svg>',
@@ -241,13 +272,31 @@
       return `<figure class="media-card" tabindex="0" data-src="${ASSET_BASE}${m.file}" data-title="${m.title}"><div class="media-frame">${safeImage(m)}</div><figcaption><b>${m.title}</b><span>${m.type}</span></figcaption></figure>`;
     }
 
-    // ---------- 渲染主函数 ----------
+    // ============================================================
+    // 4. 主渲染函数（含证书分类标签）
+    // ============================================================
     function render() {
       const r = resume;
       const email = r.emailParts.join('@');
 
-      // 构建全部证书图片（精选 + 9-35）
-      const allCertMedia = r.featuredMedia.concat(r.certificates);
+      // 生成证书标签和面板
+      const certTabs = r.certGroups.map((g, i) =>
+        `<button class="tab" role="tab" aria-selected="${i===0}" aria-controls="cert-${i}" data-cert-tab="${i}">${g.name}</button>`
+      ).join('');
+
+      const certPanels = r.certGroups.map((g, i) =>
+        `<div class="panel" id="cert-${i}" role="tabpanel" ${i!==0 ? 'hidden' : ''}><div class="gallery">${g.items.map(mediaCard).join('')}</div></div>`
+      ).join('');
+
+      // 文档面板（单独一个tab）
+      const docTab = `<button class="tab" role="tab" aria-selected="false" aria-controls="cert-docs" data-cert-tab="docs">思考文档</button>`;
+      const docPanel = `<div class="panel" id="cert-docs" role="tabpanel" hidden><div class="doc-grid">${r.docs.map(d => `
+        <a class="doc-card" href="${ASSET_BASE}${d.file}" download>
+          <span class="doc-icon">DOCX</span>
+          <span><b>${d.title}</b><span>${d.desc}</span></span>
+          <span class="arrow">↗</span>
+        </a>
+      `).join('')}</div></div>`;
 
       document.getElementById('app').innerHTML = `
         <!-- Hero -->
@@ -324,7 +373,7 @@
           </div>
         </div></section>
 
-        <!-- 教育与证书（含图片墙） -->
+        <!-- 教育与证书（含分类标签） -->
         <section class="section" id="credentials"><div class="wrap">
           <div class="section-head reveal"><div><span class="eyebrow">Education & Credentials</span><h2>教育、荣誉与专业认证</h2></div><p class="muted">持续学习，形成复合能力</p></div>
           <div class="education">
@@ -341,21 +390,11 @@
 
           <div style="height:48px"></div>
           <div class="tabs" role="tablist" aria-label="证书与文档分类">
-            <button class="tab" role="tab" aria-selected="true" aria-controls="cred-all" data-cred-tab="all">全部证书</button>
-            <button class="tab" role="tab" aria-selected="false" aria-controls="cred-docs" data-cred-tab="docs">思考文档</button>
+            ${certTabs}
+            ${docTab}
           </div>
-          <div class="panel" id="cred-all" role="tabpanel">
-            <div class="gallery">${allCertMedia.map(mediaCard).join('')}</div>
-          </div>
-          <div class="panel" id="cred-docs" role="tabpanel" hidden>
-            <div class="doc-grid">${r.docs.map(d => `
-              <a class="doc-card" href="${ASSET_BASE}${d.file}" download>
-                <span class="doc-icon">DOCX</span>
-                <span><b>${d.title}</b><span>${d.desc}</span></span>
-                <span class="arrow">↗</span>
-              </a>
-            `).join('')}</div>
-          </div>
+          ${certPanels}
+          ${docPanel}
         </div></section>
 
         <!-- 联系 + 二维码 -->
@@ -378,15 +417,17 @@
         <footer class="footer"><div class="wrap footer-in"><span>© ${new Date().getFullYear()} ${r.name} · Personal Resume</span><span>最近更新：${r.updated}</span></div></footer>
       `;
 
-      // 绑定组件
+      // 绑定交互（证书标签使用 data-cert-tab）
       bindTabs('[data-tab]', 'exp-', 'data-tab');
-      bindTabs('[data-cred-tab]', 'cred-', 'data-cred-tab');
+      bindCertTabs('[data-cert-tab]');
       bindMedia();
       bindReveal();
       document.querySelectorAll('[data-copy-email]').forEach(b => b.addEventListener('click', () => copyEmail(email)));
     }
 
-    // ---------- 交互绑定 ----------
+    // ============================================================
+    // 5. 交互绑定
+    // ============================================================
     function bindTabs(selector, prefix, attr) {
       const tabs = [...document.querySelectorAll(selector)];
       tabs.forEach((tab, index) => {
@@ -404,6 +445,30 @@
           const active = t === tab;
           t.setAttribute('aria-selected', active);
           document.getElementById(prefix + t.getAttribute(attr)).hidden = !active;
+        });
+      }
+    }
+
+    // 专门用于证书标签（因为面板id是 cert-0, cert-1, ... 和 cert-docs）
+    function bindCertTabs(selector) {
+      const tabs = [...document.querySelectorAll(selector)];
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => activate(tab));
+        tab.addEventListener('keydown', e => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+          e.preventDefault();
+          let n = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (index + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          tabs[n].focus();
+          activate(tabs[n]);
+        });
+      });
+      function activate(tab) {
+        const targetId = tab.getAttribute('data-cert-tab');
+        tabs.forEach(t => {
+          const active = t === tab;
+          t.setAttribute('aria-selected', active);
+          const panelId = targetId === 'docs' ? 'cert-docs' : 'cert-' + targetId;
+          document.getElementById(panelId).hidden = !active;
         });
       }
     }
@@ -458,7 +523,9 @@
       toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
     }
 
-    // ---------- 主题与打印 ----------
+    // ============================================================
+    // 6. 主题切换 / 打印 / 菜单 / 返回顶部 / 导航高亮
+    // ============================================================
     function applyTheme(theme) {
       document.documentElement.dataset.theme = theme;
       document.querySelector('meta[name=theme-color]').content = theme === 'dark' ? '#0d1713' : '#f5f7f2';
@@ -466,7 +533,7 @@
       try { localStorage.setItem('resume-theme', theme); } catch (e) {}
     }
 
-    // 启动
+    // 启动渲染
     render();
 
     const saved = (() => { try { return localStorage.getItem('resume-theme'); } catch (e) { return null; } })();
@@ -486,7 +553,7 @@
     });
     menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); }));
 
-    // 灯箱
+    // 灯箱关闭
     const closeLightbox = () => { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; };
     document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
     document.getElementById('lightbox').addEventListener('click', e => { if (e.target.id === 'lightbox') closeLightbox(); });
